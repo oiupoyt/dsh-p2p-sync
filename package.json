@@ -1,0 +1,15 @@
+{
+  "name": "@local/dsh-p2p-sync",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Direct peer-to-peer sync for DeepSeek Harness",
+  "main": "lib/index.js",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "dependencies": {
+    "@deepseek-ai/schemastery": "~3.19.0"
+  }
+}

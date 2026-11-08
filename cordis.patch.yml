@@ -1,0 +1,4 @@
+- insert:
+    - id: p2p-sync
+      name: '@local/dsh-p2p-sync'
+      config: {}
