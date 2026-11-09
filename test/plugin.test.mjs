@@ -8,7 +8,7 @@ import plugin, { name, inject, Config, apply } from '../lib/index.js';
 describe('plugin registration and tools', () => {
   it('exports valid Cordis plugin contract', () => {
     assert.equal(name, 'dsh-p2p-sync');
-    assert.deepEqual(inject, ['web']);
+    assert.deepEqual(inject, ['tools']);
     assert.ok(Config);
     assert.equal(typeof apply, 'function');
     assert.equal(typeof plugin, 'function');
