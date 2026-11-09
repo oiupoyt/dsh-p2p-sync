@@ -1,6 +1,6 @@
 {
   "name": "dsh-p2p-sync",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "type": "module",
   "description": "Direct peer-to-peer sync for DeepSeek Harness (no cloud, no coordinator).",
   "main": "lib/index.js",
