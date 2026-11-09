@@ -6,6 +6,18 @@ Keeps two DSH installs (such as an Android phone and a laptop) in sync directly 
 
 ---
 
+## Features
+
+- **Settings Page & Web GUI**: Dedicated **P2P Sync** page in DSH Settings with live status, connection indicator, peer list manager, and manual sync controls.
+- **Connection Indicator**: Real-time status badge (Emerald square when connected/synced, Gray when listening, Red on error).
+- **Full P2P Replica**: Direct TCP replication with zero cloud or central server dependencies.
+- **Deterministic Conflict Resolution**:
+  - **Chats & Sessions**: Monotonic sequence progression. Automatic deterministic forking on offline divergence (`<id>-fork-<device8>`).
+  - **Configs & Preferences**: Hybrid Logical Clock (HLC) with Last-Write-Wins (LWW). Overwritten versions are safely archived under `sync-state/conflicts/`.
+- **Wire Security**: HMAC-SHA256 handshake authentication with a shared secret.
+
+---
+
 ## Installation
 
 ### From NPM
@@ -17,8 +29,6 @@ npm install dsh-p2p-sync
 ```
 
 ### Local Development / npm link
-
-To link and develop locally:
 
 ```bash
 cd dsh-p2p-sync
@@ -47,9 +57,19 @@ Add the plugin to your profile's `cordis.patch.yml`:
 
 ---
 
-## Tools
+## Web GUI & Settings
 
-Once loaded, the plugin registers four tools on your DSH agent:
+Open DSH **Settings** in your browser:
+- **P2P Sync Section**: A dedicated tab in the settings sidebar with the P2P sync icon.
+- **Connection Indicator**: View whether peers are actively connected or listening for connections.
+- **Device ID**: Inspect and copy your device's unique P2P identity.
+- **Peer Management**: Add and remove peer addresses directly from the interface.
+- **Instant Actions**: Trigger **Sync Now** or **Dry Run Preview** with immediate visual feedback.
+- **General Settings**: A status row in General Settings displays the current listener port and sync state.
+
+---
+
+## Tools
 
 | Tool | Parameters | Description |
 |---|---|---|
@@ -57,15 +77,6 @@ Once loaded, the plugin registers four tools on your DSH agent:
 | `sync_now` | `{ peer?: string, dryRun?: boolean }` | Trigger an immediate sync round (use `dryRun: true` to preview changes). |
 | `sync_peers` | `{ action: "list"\|"add"\|"remove", peer?: string }` | List, add, or remove peer addresses at runtime. |
 | `sync_pending` | `{ peer?: string }` | Inspect sessions and configs that differ right now without applying changes. |
-
----
-
-## How It Works
-
-- **Sessions (`session.v4.jsonl.zstd`)**: Append-only replication tracking high-water sequence marks. Strict contiguity checking prevents gaps. If both devices edit the same session offline, the higher device ID automatically renames its copy to `<id>-fork-<device8>` so zero data is lost.
-- **Config & Preferences**: Reconciled using a Hybrid Logical Clock (HLC) with Last-Write-Wins (LWW). Overwritten local configs are backed up under `sync-state/conflicts/`.
-- **Wire Security**: Peer connections authenticate via an HMAC-SHA256 handshake over exchanged random nonces.
-- **Exclusions**: Secrets (`.credentials.yaml`), machine binaries (`node_modules/`), and runtime state logs are never transmitted.
 
 ---
 
